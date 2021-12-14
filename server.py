@@ -1,6 +1,7 @@
 
 # Import socket module
 import socket
+import sys
 
 # server ip addr assigned by router
 ip = '127.0.0.1'
@@ -15,25 +16,21 @@ def initServer():
         skt.bind((ip, port))
         print("socket binded to %s" % (port))
     except socket.error as err:
-        print("socket creation failed with error %s" % (err))
-
+        print("[!!Server Error!!] %s" % (err))
+        sys.exit(-1)
     return skt
 
 
 def listenClient():
-    try:
-        # socket listen one clinet each time
-        skt.listen(1)
-    except socket.error as err:
-        print("socket creation failed with error %s" % (err))
-
+    skt.listen(1)
     print("socket is listening...")
     # Establish connection with client.
     client, addr = skt.accept()
     print('Conneted with client:', addr)
 
     # send feedback to client
-    client.send('Server 9080: Connected! Hope to serve you again!'.encode())
+    client.send(
+        '[Server 9080]Message: Connected! Hope to serve you again!'.encode())
 
     # Close connection
     client.close()
@@ -43,4 +40,5 @@ def listenClient():
 
 if __name__ == '__main__':
     skt = initServer()
-    listenClient()
+    while True:
+        listenClient()
