@@ -15,7 +15,7 @@ def connect():
     skt.connect((host, port))
 
     # receive feedback from server
-    print(skt.recv(256).decode())
+    print(skt.recv(1024).decode())
     # close connection
     skt.close()
 
